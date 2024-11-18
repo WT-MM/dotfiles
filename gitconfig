@@ -1,6 +1,6 @@
 [user]
     name = Wesley Maa
-    email = wesley.maas@gmail.com
+    email = wesley.maa@gmail.com
 
 [include]
     path = ~/.gitconfig_local

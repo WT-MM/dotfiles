@@ -218,8 +218,7 @@
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.explorerKind": "external",
-  "terminal.external.osxExec": "iTerm.app",
+  "terminal.explorerKind": "integrated",
 
   /* Remote features */
   "remote.autoForwardPorts": true,
@@ -231,25 +230,7 @@
   "remote.SSH.enableDynamicForwarding": false,
   "remote.SSH.localServerDownload": "off",
   "remote.SSH.remoteServerListenOnSocket": true,
-  "remote.SSH.remotePlatform": {
-    "bbolte-local": "linux",
-    "wall-e": "linux",
-    "wall-e.public": "linux",
-    "yui-hirasawa": "linux",
-    "sdc": "linux",
-    "se02": "linux",
-    "moloch": "linux",
-    "free-jetson": "linux",
-    "devfair": "linux",
-    "lab": "linux",
-    "stretch-1": "linux",
-    "stretch": "linux",
-    "gregson": "linux",
-    "andromeda": "linux",
-    "misaki-nakahara": "linux",
-    "stompy-torso": "linux",
-    "garage-rig": "linux"
-  },
+  "remote.SSH.remotePlatform": {},
 
   /* Speed up search */
   "search.followSymlinks": false,
@@ -369,9 +350,8 @@
   "git.openRepositoryInParentFolders": "never",
   "window.zoomLevel": -1,
 
-  /* Vim */
-  "editor.lineNumbers": "relative",
-  "cursor.cpp.disabledLanguages": ["scminput"],
+  /* Editor features */
+  "editor.lineNumbers": "on",
   "editor.accessibilitySupport": "off",
   "vsintellicode.modify.editor.suggestSelection": "choseToUpdateConfiguration"
 }

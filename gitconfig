@@ -1,6 +1,6 @@
 [user]
-    name = Benjamin Bolte
-    email = ben@bolte.cc
+    name = Wesley Maa
+    email = wesley.maas@gmail.com
 
 [include]
     path = ~/.gitconfig_local

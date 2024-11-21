@@ -6,7 +6,7 @@ envs_dirs:
   - ~/.conda/envs
 always_yes: true
 update_dependencies: true
-auto_activate_base: false
+auto_activate_base: true
 ssl_verify: true
 default_threads: 16
-changeps1: false
+changeps1: true

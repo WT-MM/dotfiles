@@ -1,138 +1,117 @@
-" vundle
-set nocompatible
-filetype off
+" An example for a vimrc file.
+"
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Last change:	2019 Dec 17
+"
+" To use it, copy it to
+"	       for Unix:  ~/.vimrc
+"	      for Amiga:  s:.vimrc
+"	 for MS-Windows:  $VIM\_vimrc
+"	      for Haiku:  ~/config/settings/vim/vimrc
+"	    for OpenVMS:  sys$login:.vimrc
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin('~/.vim/plugins')
+" When started as "evim", evim.vim will already have done these settings, bail
+" out.
+if v:progname =~? "evim"
+  finish
+endif
 
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+" Get the defaults that most users want.
+source $VIMRUNTIME/defaults.vim
 
-" required vundle
-call vundle#end()
-filetype plugin indent on
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file (restore to previous version)
+  if has('persistent_undo')
+    set undofile	" keep an undo file (undo changes after closing)
+  endif
+endif
 
-set runtimepath+=~/.vim_runtime
+if &t_Co > 2 || has("gui_running")
+  " Switch on highlighting the last used search pattern.
+  set hlsearch
+endif
 
-" base vimrc
-source ~/.vim_runtime/vimrcs/basic.vim
-source ~/.vim_runtime/vimrcs/filetypes.vim
-source ~/.vim_runtime/vimrcs/plugins_config.vim
-source ~/.vim_runtime/vimrcs/extended.vim
+" Put these in an autocmd group, so that we can delete them easily.
+augroup vimrcEx
+  au!
 
-" turns on syntax highlighting
-syntax enable
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+augroup END
 
-" use spaces not tabs
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+" Add optional packages.
+"
+" The matchit plugin makes the % command work better, but it is not backwards
+" compatible.
+" The ! means the package won't be loaded right away but when plugins are
+" loaded during initialization.
+if has('syntax') && has('eval')
+  packadd! matchit
+endif
 
-" show line numbers
-set relativenumber
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vim from Jae :D
+"
 
-" show command in bottom bar
-set showcmd
+" Appearance
+set number         " show line numbers
+set laststatus=2   " always show status line
 
-" highlight current line
-set cursorline
+" Show a few lines of context at the top or bottom
+" - vim's default is 5, but Jae likes 1
+set scrolloff=1
 
-" load filetype-specific indent files
-filetype indent on
+" Buffer switching using Cmd-Left/Right or Alt-Left/Right
+:nnoremap <D-Right> :bnext<CR>
+:nnoremap <M-Right> :bnext<CR>
+:nnoremap <D-Left> :bprevious<CR>
+:nnoremap <M-Left> :bprevious<CR>
+" and don't let MacVim remap them
+if has("gui_macvim")
+    let macvim_skip_cmd_opt_movement = 1
+endif
 
-" highlight matches
-set showmatch
+" Tab settings
+set tabstop=8      " do NOT change this; see help page -- run :h 'tabstop'
+set shiftwidth=4   " when coding, auto-indent by 4 spaces, a la K&R
+set expandtab      " always replace tab with spaces,
+autocmd FileType make setlocal noexpandtab         " except for Makefile
 
-" search
-set incsearch
-set hlsearch
+" Text file settings
+" - automatically indent lines according to previous lines
+" - replace tab with 8 spaces
+" - when I hit tab key, move 2 spaces instead of 8
+" - wrap text if I go longer than 80 columns
+" - check spelling
+autocmd FileType text setlocal autoindent expandtab softtabstop=2 textwidth=80 spell spelllang=en_us
 
-" turn of highlighting
-nnoremap <leader><space> :nohlsearch<CR>
+" Don't do spell-checking on Vim help files
+autocmd FileType help setlocal nospell
 
-" remap for navigating windows
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" Create ~/.vimbackup (if not there already) to store backup, undo, swap files
+silent! !mkdir -p ~/.vimbackup
 
-" python indentation
-au BufNewFile,BufRead *.py set
-    \ tabstop=4
-    \ softtabstop=4
-    \ shiftwidth=4
-    \ expandtab
-    \ autoindent
-    \ fileformat=unix
+" Prepend ~/.vimbackup to backupdir & undodir, so that Vim will look for
+" that directory before littering the current dir with backup and undo files
+set backupdir^=~/.vimbackup
+set undodir^=~/.vimbackup
 
-" full-stack
-au BufNewFile,BufRead *.js, *.html, *.css set
-    \ tabstop=2
-    \ softtabstop=2
-    \ shiftwidth=2
+" Also use ~/.vimbackup for swap files. The trailing // tells Vim to
+" incorporate full path into swap file names
+set dir^=~/.vimbackup//
 
-" utf--8
-set encoding=utf-8
+" Ignore case when searching
+" - override this setting by tacking on \c or \C to your search term to make
+"   your search always case-insensitive or case-sensitive, respectively.
+set ignorecase
 
-" mypy
-" nnoremap <buffer> <localleader>mp :call mypy#ExecuteMyPy()<cr>
-" let python_highlight_all=1
-" let g:flake8_show_quickfix=1
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
 
-" show file name in status bar
-set statusline+=%F
-
-" tab movement
-nnoremap  th  :tabfirst<CR>
-nnoremap  tk  :tabnext<CR>
-nnoremap  tj  :tabprev<CR>
-nnoremap  tl  :tablast<CR>
-nnoremap  tt  :tabedit<Space>
-nnoremap  tn  :tabnext<Space>
-nnoremap  tm  :tabm<Space>
-nnoremap  td  :tabclose<CR>
-
-" tab movement with <Ctrl + Space> and <Ctrl + t>
-nnoremap  <C-S-@>  :tabprevious<CR>
-nnoremap  <C-@>    :tabnext<CR>
-nnoremap  <C-t>    :tabnew<CR>
-inoremap  <C-S-@>  <Esc>:tabprevious<CR>i
-inoremap  <C-@>    <Esc>:tabnext<CR>i
-inoremap  <C-t>    <Esc>:tabnew<CR>
-
-" tab highlighting
-highlight TabLineFill ctermfg=Black ctermbg=White
-highlight TabLine     ctermfg=White ctermbg=Black
-highlight TabLineSel  ctermfg=Black ctermbg=White
-highlight Title       ctermfg=Black ctermbg=White
-
-" aliases for common typos
-noreabbrev W w
-noreabbrev Q q
-noreabbrev X x
-noremap    ; :
-noremap    ; :
-
-" expand %% to current file path
-cabbr <expr> %% expand('%:p:h')
-
-" code search
-nnoremap <silent> <C-f> :Files<CR>
-
-" text alignment
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
-" scrollbar
-set mouse=r
-set ttymouse=xterm2
-
-" remove whitespace on write
-autocmd FileType c,cpp,java,php,cu,py autocmd BufWritePre <buffer> %s/\s\+$//e
-
-" colorscheme
-set background=dark
-
-" paste
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
-set showmode
-
+"
+" End of Jae's Vim settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

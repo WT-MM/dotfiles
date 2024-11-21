@@ -1456,3 +1456,9 @@ install-python3.9() {
 install-python3.8() {
     install-python-version 3.8
 }
+
+# -------------------
+# Template aliases
+# -------------------
+
+alias create-python-project='python ~/.python/create-python-project'

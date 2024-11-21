@@ -931,7 +931,7 @@ cn-new() {
         return 1
     fi
     local ENV_NAME=$1
-    load-conda
+    # load-conda
     conda create -n $ENV_NAME python=$DEFAULT_PYTHON_VERSION
     conda deactivate
     conda activate $ENV_NAME
@@ -1257,27 +1257,27 @@ shell-str() {
     echo $SHELL | awk -F/ '{print $NF}'
 }
 
-load-conda() {
-    unalias conda 2> /dev/null
+unalias conda 2> /dev/null
 
-    conda_sh=${CONDA_DIR}/etc/profile.d/conda.sh
-    if [ -f "${conda_sh}" ]; then
-        . "${conda_sh}"
-    else
-        pathadd PATH $CONDA_DIR/bin/
-    fi
+# load-conda() {
+#     conda_sh=${CONDA_DIR}/etc/profile.d/conda.sh
+#     if [ -f "${conda_sh}" ]; then
+#         . "${conda_sh}"
+#     else
+#         pathadd PATH $CONDA_DIR/bin/
+#     fi
 
-    # If Conda is unavailable, show a warning and return.
-    if [[ ! -d ${CONDA_DIR} ]]; then
-        warn-with-red-background "Conda not installed to \$CONDA_DIR"
-        return 0
-    fi
+#     # If Conda is unavailable, show a warning and return.
+#     if [[ ! -d ${CONDA_DIR} ]]; then
+#         warn-with-red-background "Conda not installed to \$CONDA_DIR"
+#         return 0
+#     fi
 
-    local conda_setup=$("${CONDA_DIR}/bin/conda" "shell.$(shell-str)" 'hook')
-    eval $conda_setup
-}
+#     local conda_setup=$("${CONDA_DIR}/bin/conda" "shell.$(shell-str)" 'hook')
+#     eval $conda_setup
+# }
 
-alias conda='load-conda && \conda'
+# alias conda='load-conda && \conda'
 
 load-cargo() {
     unalias cargo 2> /dev/null

@@ -88,7 +88,7 @@
     rebase = true
 
 [push]
-    default = matching
+    default = simple
 
 [fetch]
     prune = true

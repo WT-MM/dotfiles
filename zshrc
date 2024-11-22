@@ -1,5 +1,4 @@
 # .zshrc
-
 # ---------------------------------
 # Return for non-interactive shells
 # ---------------------------------
@@ -38,6 +37,7 @@ source ~/.zsh/settings.zsh
 source ~/.shell/update.sh
 source ~/.shell/info.sh
 source ~/.shell/aliases.sh
+source ~/.shell/path.sh
 
 source ~/.zsh/autocomplete.zsh
 source ~/.zsh/plugins_after.zsh
@@ -49,8 +49,6 @@ fi
 if [ -f ~/.zshrc_local_after ]; then
     source ~/.zshrc_local_after
 fi
-
-source ~/.shell/path.sh
 
 end_time=$(get_time)
 time_delta=$(($end_time - $start_time))

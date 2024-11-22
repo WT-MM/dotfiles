@@ -9,6 +9,9 @@
 # C++ flags for programming competitions.
 # export CXXFLAGS="-Wall -Wextra -O2 -pedantic -std=c++11"
 
+SSHOSTS_COLOR=4  # Can be changed to any number 1-7 for different colors
+alias sshosts='grep "^Host " ~/.ssh/config ~/.ssh/config.d/* 2>/dev/null | sed -e "s/Host //" -e "/\*/d" -e "s/.*://" | sed "s/.*$/$(tput setaf $SSHOSTS_COLOR)&$(tput sgr0)/"'
+
 # -------------
 # Color aliases
 # -------------
@@ -1168,6 +1171,16 @@ alias docker-clean='docker-kill && docker image prune -a -f && docker volume pru
 # Manage path environment variables
 # ---------------------------------
 
+env-val() {
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: env-val <var-name>"
+        return 1
+    fi
+    local var=$1
+    eval "echo \${$var:-}"
+    return 0
+}
+
 pathadd() {
     if [[ $# -ne 2 ]] && [[ $# -ne 3 ]]; then
         echo "Usage: pathadd <var> <new-path>"
@@ -1456,9 +1469,3 @@ install-python3.9() {
 install-python3.8() {
     install-python-version 3.8
 }
-
-# -------------------
-# Template aliases
-# -------------------
-
-alias create-python-project='python ~/.python/create-python-project'

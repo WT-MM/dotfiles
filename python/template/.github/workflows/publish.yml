@@ -4,6 +4,27 @@ on:
   release:
     types: [created]
   workflow_dispatch:
+    inputs:
+      build_wheels:
+        description: 'Build platform-specific wheels'
+        required: true
+        default: 'false'
+        type: boolean
+      build_linux:
+        description: 'Build Linux wheels'
+        required: true
+        default: 'true'
+        type: boolean
+      build_macos:
+        description: 'Build macOS wheels'
+        required: true
+        default: 'true'
+        type: boolean
+      build_windows:
+        description: 'Build Windows wheels'
+        required: true
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: read
@@ -17,10 +38,17 @@ jobs:
   build-wheels:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            build_flag: build_linux
+          - os: macos-latest
+            build_flag: build_macos
+          - os: windows-latest
+            build_flag: build_windows
     name: Build and publish Python package (${{ matrix.os }})
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
+    if: inputs.build_wheels && inputs[matrix.build_flag]
 
     steps:
       - name: Checkout code

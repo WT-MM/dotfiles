@@ -87,6 +87,9 @@
 [pull]
     rebase = true
 
+[pager]
+    branch = false
+
 [push]
     default = simple
 

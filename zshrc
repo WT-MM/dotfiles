@@ -55,3 +55,9 @@ time_delta=$(($end_time - $start_time))
 if [ $time_delta -gt $SLOW_STARTUP_WARNING_MS ]; then
     warn-with-red-background "Startup took $time_delta milliseconds"
 fi
+
+# Start SSH agent if not running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_ed25519
+fi

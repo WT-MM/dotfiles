@@ -1496,3 +1496,22 @@ install-python3.9() {
 install-python3.8() {
     install-python-version 3.8
 }
+
+waitping() {
+    if [[ $# -lt 2 ]]; then
+        echo "Usage: waitping <host> <command>"
+        return 1
+    fi
+    
+    local host=$1
+    shift
+    local cmd="$@"
+    
+    echo "Waiting for $host to respond..."
+    until ping -c 1 -W 1 $host >/dev/null 2>&1; do
+        sleep 1
+    done
+    
+    echo "$host is responding, executing: $cmd"
+    eval "$cmd"
+}

@@ -1515,3 +1515,7 @@ waitping() {
     echo "$host is responding, executing: $cmd"
     eval "$cmd"
 }
+
+waitssh() {
+    waitping $1 "ssh $1"
+}

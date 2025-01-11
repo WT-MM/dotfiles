@@ -1517,5 +1517,12 @@ waitping() {
 }
 
 waitssh() {
-    waitping $1 "ssh $1"
+    if [[ $# -lt 1 ]] || [[ $# -gt 2 ]]; then
+        echo "Usage: waitssh <host> (<user>)"
+        return 1
+    fi
+    
+    local host=$1
+    local user=${2:-$USER}  # Use provided user or default to $USER
+    waitping $host "ssh ${user}@${host}"
 }

@@ -29,6 +29,8 @@ if [ -f ~/.zshrc_local_before ]; then
     source ~/.zshrc_local_before
 fi
 
+zstyle ':completion:*:warnings' format ''
+
 source ~/.zsh/plugins_before.zsh
 source ~/.zsh/command_line.zsh
 source ~/.zsh/aliases.zsh

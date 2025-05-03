@@ -4,7 +4,7 @@
 
 import re
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as f:
     long_description: str = f.read()
@@ -36,7 +36,7 @@ setup(
     install_requires=requirements,
     tests_require=requirements_dev,
     extras_require={"dev": requirements_dev},
-    packages=["[[PROJECT PYTHON NAME]]"],
+    packages=find_packages(),
     # entry_points={
     #     "console_scripts": [
     #         "[[PROJECT PYTHON NAME]].cli:main",

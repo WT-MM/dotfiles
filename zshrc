@@ -7,6 +7,10 @@ if [ -z "$PS1" ]; then
     return
 fi
 
+typeset -gU fpath
+autoload -Uz compinit
+compinit -u
+
 # -----------
 # Main config
 # -----------

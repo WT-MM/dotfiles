@@ -6,7 +6,8 @@ pathadd PATH ${HOME}/.scripts-local > /dev/null
 
 # Adds additional scripts.
 pathadd PATH ${HOME}/.local/bin > /dev/null
-pathadd PATH ${HOME}/.third-party/bin
+# pathadd PATH ${HOME}/.third-party/bin
+PATH="$PATH:${HOME}/.third-party/bin"
 
 # Golang
 export GOPATH=${HOME}/.go

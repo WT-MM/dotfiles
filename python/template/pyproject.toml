@@ -1,8 +1,49 @@
-[tool.black]
+[project]
 
-line-length = 120
-target-version = ["py311"]
-include = '\.pyi?$'
+name = "[[PROJECT NAME]]"
+description = "[[PROJECT DESCRIPTION]]"
+authors = [
+    { name = "[[PROJECT AUTHOR]]", email = "[[PROJECT AUTHOR EMAIL]]" },
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">= [[PROJECT PYTHON VERSION]]"
+dynamic = ["version"]
+dependencies = []
+
+[project.urls]
+
+Repository = "[[PROJECT URL]]"
+
+[project.optional-dependencies]
+
+dev = [
+    "ruff",
+    "mypy",
+    "pytest",
+]
+
+[build-system]
+
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+
+include-package-data = true
+
+[tool.setuptools.packages.find]
+
+where = ["."]
+include = ["[[PROJECT PYTHON NAME]]*"]
+
+[tool.setuptools.package-data]
+
+"[[PROJECT PYTHON NAME]]" = ["*.py", "*.txt", "py.typed"]
+
+[tool.setuptools.dynamic]
+
+version = {attr = "[[PROJECT PYTHON NAME]].__version__"}
 
 [tool.pytest.ini_options]
 
@@ -35,14 +76,15 @@ namespace_packages = false
 # module = []
 # ignore_missing_imports = true
 
-[tool.isort]
-
-profile = "black"
-
 [tool.ruff]
 
 line-length = 120
 target-version = "py310"
+
+[tool.ruff.format]
+
+quote-style = "double"
+docstring-code-format = true
 
 [tool.ruff.lint]
 

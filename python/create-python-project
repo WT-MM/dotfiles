@@ -74,7 +74,7 @@ def main() -> None:
         "[[PROJECT PYTHON NAME]]": python_safe_name,
         "[[PROJECT DESCRIPTION]]": description,
         "[[PROJECT AUTHOR]]": author,
-        "[[PROJECT EMAIL]]": email,
+        "[[PROJECT AUTHOR EMAIL]]": email,
         "[[PROJECT URL]]": url,
         "[[PROJECT PYTHON VERSION]]": version,
     }
@@ -104,6 +104,20 @@ def main() -> None:
 
     # Renames the `project` subdirectory to the project name.
     (tgt_dir / "project").rename(tgt_dir / python_safe_name)
+
+    # Initializes git repository and sets remote origin.
+    try:
+        import git
+
+        repo = git.Repo.init(tgt_dir)
+        # Ensures the URL ends with .git for git remotes (if it's a GitHub URL).
+        git_url = url
+        if "github.com" in url and not url.endswith(".git"):
+            git_url = f"{url}.git"
+        repo.create_remote("origin", git_url)
+    except Exception:
+        print(f"Error initializing git repository: {e}. Continuing without it.")
+        pass
 
 
 if __name__ == "__main__":

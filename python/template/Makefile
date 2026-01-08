@@ -40,7 +40,10 @@ push-to-pypi: build-for-pypi
 #       Static Checks      #
 # ------------------------ #
 
-py-files := $(shell find . -name '*.py')
+excluded := ./.venv
+exclude_args := $(foreach d,$(excluded),-path "$(d)" -prune -o)
+
+py-files := $(shell find . $(exclude_args) -name '*.py' -print)
 
 format:
 	@black $(py-files)

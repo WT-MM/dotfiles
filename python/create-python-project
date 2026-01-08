@@ -3,6 +3,7 @@
 
 import argparse
 import re
+from datetime import datetime
 from pathlib import Path
 
 
@@ -77,6 +78,7 @@ def main() -> None:
         "[[PROJECT AUTHOR EMAIL]]": email,
         "[[PROJECT URL]]": url,
         "[[PROJECT PYTHON VERSION]]": version,
+        "[[PROJECT YEAR]]": str(datetime.now().year),
     }
 
     # Copies the `template` directory to the target directory, replacing placeholders.
@@ -115,7 +117,7 @@ def main() -> None:
         if "github.com" in url and not url.endswith(".git"):
             git_url = f"{url}.git"
         repo.create_remote("origin", git_url)
-    except Exception:
+    except Exception as e:
         print(f"Error initializing git repository: {e}. Continuing without it.")
         pass
 

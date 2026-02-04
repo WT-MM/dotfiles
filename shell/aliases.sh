@@ -1531,3 +1531,16 @@ waitssh() {
     local user=${2:-$USER}  # Use provided user or default to $USER
     waitping $host "ssh ${user}@${host}"
 }
+
+# previously used `ifconfig | grep -A 2 utun` and manually scanned for the 10.x.x.x interface
+nord() {
+    nord_if=$(ifconfig | awk '
+        /^utun[0-9]+:/ { sub(/:/, "", $1); u = $1 }
+        $1 == "inet" && $2 ~ /^10\./ && $0 ~ /-->/ { print u; exit }
+    ')
+    if [ -n "$nord_if" ]; then
+        echo "$(tput bold)$(blue)NordVPN interface is$(no_color) $(tput bold)$(green)${nord_if}$(no_color)"
+    else
+        echo "no interface found. Is $(tput bold)$(blue)NordVPN$(no_color) up?"
+    fi
+}

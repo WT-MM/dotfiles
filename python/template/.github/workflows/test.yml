@@ -23,28 +23,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
         with:
-          python-version: "[[PROJECT PYTHON VERSION]]"
-
-      - name: Restore cache
-        id: restore-cache
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ${{ env.pythonLocation }}
-            .mypy_cache/
-          key: python-requirements-${{ env.pythonLocation }}-${{ github.event.pull_request.base.sha || github.sha }}
-          restore-keys: |
-            python-requirements-${{ env.pythonLocation }}
-            python-requirements-
+          enable-cache: true
 
       - name: Install package
         run: |
-          pip install --upgrade --upgrade-strategy eager --extra-index-url https://download.pytorch.org/whl/cpu -e '.[dev]'
+          uv sync --extra dev
 
       - name: Run static checks
         run: |
@@ -54,12 +42,3 @@ jobs:
       - name: Run unit tests
         run: |
           make test
-
-      - name: Save cache
-        uses: actions/cache/save@v3
-        if: github.ref == 'refs/heads/master'
-        with:
-          path: |
-            ${{ env.pythonLocation }}
-            .mypy_cache/
-          key: ${{ steps.restore-cache.outputs.cache-primary-key }}

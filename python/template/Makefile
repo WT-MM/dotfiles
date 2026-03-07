@@ -5,9 +5,8 @@ define HELP_MESSAGE
 
 # Installing
 
-1. Create a new Conda environment: `conda create --name [[PROJECT NAME]] python=3.11`
-2. Activate the environment: `conda activate [[PROJECT NAME]]`
-3. Install the package: `make install-dev`
+1. Install uv: https://docs.astral.sh/uv/getting-started/installation/
+2. Install the package: `uv sync --extra dev`
 
 # Running Tests
 
@@ -27,13 +26,11 @@ all:
 # ------------------------ #
 
 build-for-pypi:
-	@pip install --verbose build wheel twine
-	@python -m build --sdist --wheel --outdir dist/ .
-	@twine upload dist/*
+	@uv build
 .PHONY: build-for-pypi
 
 push-to-pypi: build-for-pypi
-	@twine upload dist/*
+	@uv publish
 .PHONY: push-to-pypi
 
 # ------------------------ #
@@ -46,20 +43,20 @@ exclude_args := $(foreach d,$(excluded),-path "$(d)" -prune -o)
 py-files := $(shell find . $(exclude_args) -name '*.py' -print)
 
 format:
-	@ruff format $(py-files)
-	@ruff check --fix $(py-files)
+	@uv run ruff format $(py-files)
+	@uv run ruff check --fix $(py-files)
 .PHONY: format
 
 static-checks:
-	@ruff format --check $(py-files)
-	@ruff check $(py-files)
-	@mypy --install-types --non-interactive $(py-files)
-.PHONY: lint
+	@uv run ruff format --check $(py-files)
+	@uv run ruff check $(py-files)
+	@uv run mypy --install-types --non-interactive $(py-files)
+.PHONY: static-checks
 
 # ------------------------ #
 #        Unit tests        #
 # ------------------------ #
 
 test:
-	python -m pytest
+	uv run python -m pytest
 .PHONY: test

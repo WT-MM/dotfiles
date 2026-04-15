@@ -119,6 +119,7 @@ alias mv='mv -i'
 
 # clear
 alias cl='clear'
+alias cld='claude --dangerously-skip-permissions'
 alias reload='exec $SHELL'
 
 # nvidia
